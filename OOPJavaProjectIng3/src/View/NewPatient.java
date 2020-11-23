@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package View;
-
+import Model.Connexion;
 /**
  *
  * @author ayzac
@@ -57,6 +57,11 @@ public class NewPatient extends javax.swing.JFrame {
         jTextField3.setText("Confirm password");
 
         jButton1.setText("Register");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -114,6 +119,23 @@ public class NewPatient extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String username=jTextField1.getText(), password=jTextField2.getText();
+        Connexion c = new Connexion();
+        c.registration(username, password);
+        System.out.println("Registration ok");
+        
+        /*if(password == jTextField3.getText())
+        {
+            c.registration(username, password);
+            System.out.println("Registration ok");
+        }
+        else
+        {
+            System.out.println("Password not compatible");
+        }*/
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
