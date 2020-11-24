@@ -123,18 +123,20 @@ public class NewPatient extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String username=jTextField1.getText(), password=jTextField2.getText();
         Connexion c = new Connexion();
-        c.registration(username, password);
-        System.out.println("Registration ok");
-        
-        /*if(password == jTextField3.getText())
+        int b=0;
+        if(password.equals(jTextField3.getText()))
         {
-            c.registration(username, password);
-            System.out.println("Registration ok");
+            b=c.registration(username, password, "Patient");
         }
         else
         {
             System.out.println("Password not compatible");
-        }*/
+        }
+        if(b==1)
+        {
+            new Application().setVisible(true);
+            this.hide();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

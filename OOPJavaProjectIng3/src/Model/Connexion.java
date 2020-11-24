@@ -15,23 +15,21 @@ public class Connexion {
     private String sqlStatement;
     private String researchStmt;
     private int id=0;
+    private int b=1;
 
-    public int verifConnection(String username, String password)
+    public int verifConnection(String username, String password, String function)
     {
         try
         {            
-            int b=0;
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            sqlStatement = "SELECT Id FROM connexion WHERE Username='" +username+ "' && Password='"+password+"'";
+            
+            sqlStatement = "SELECT * FROM connexion WHERE Username='" +username+ "' && Password='"+password+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
-            while(result.next() && b==0)
+            result.next();
+            if(function.equals(result.getString("Function")))
             {
-                if(result.getString("Username")==username && result.getString("Password")==password)
-                {
-                    id = result.getInt("Id");
-                    b=1;
-                }
+                id = result.getInt("Id");
             }
         }
         catch(SQLException e)
@@ -41,33 +39,33 @@ public class Connexion {
         return id;
     }
     
-    public void registration(String username, String password)
+    public int registration(String username, String password, String function)
     {
         try
         {            
-            int b=0;
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
             
             sqlStatement = "INSERT INTO connexion " +
-                      "(Username, Password)" +
+                      "(`Function`, `Username`, `Password`)" +
                       " VALUES " +
-                      "('"+username+"','"+password+"')";
+                      "('"+function+"','"+username+"','"+password+"')";
             
-            sqlStatement = "SELECT Id FROM connexion WHERE Username='" +username+"'";
-            ResultSet result = stmt.executeQuery(sqlStatement);
-            while(result.next() && b==0)
+            researchStmt = "SELECT * FROM connexion WHERE Username='" +username+"'";
+            ResultSet result = stmt.executeQuery(researchStmt);
+            while(result.next() && b==1)
             {
-                if(result.getString("Username") == username)
+                if(username.equals(result.getString("Username")))
                 {
-                    b=1;
+                    b=0;
                 }
             }
-            if(b==0)
+            if(b==1)
             {
-                int rows = stmt.executeUpdate(sqlStatement); 
+                int rows = stmt.executeUpdate(sqlStatement);
+                System.out.println("Registration ok");
             }
-            else if(b==1)
+            else if(b==0)
             {
                 System.out.println("Username already used");
             }
@@ -76,5 +74,6 @@ public class Connexion {
         {
             System.out.println(e.getMessage());
         }
+        return b;
     }
 }

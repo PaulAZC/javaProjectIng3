@@ -196,14 +196,15 @@ public class Application extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         String username = jTextField1.getText(), password = jTextField2.getText();
         Connexion c = new Connexion();
-        int id = c.verifConnection(username, password);
+        int id = c.verifConnection(username, password, "Patient");
         if(id==0)
         {
             System.out.println("Probleme de connection");
         }
-        else
+        else 
         {
-            System.out.println(id);
+            System.out.println("Id : " +id);
+            System.out.println("Connexion ok");
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
     
