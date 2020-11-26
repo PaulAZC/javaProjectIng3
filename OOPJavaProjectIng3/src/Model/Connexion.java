@@ -31,6 +31,8 @@ public class Connexion {
             {
                 id = result.getInt("Id");
             }
+            result.close();
+            stmt.close();
         }
         catch(SQLException e)
         {
@@ -69,6 +71,8 @@ public class Connexion {
             {
                 System.out.println("Username already used");
             }
+            result.close();
+            stmt.close();
         }
         catch(SQLException e)
         {
@@ -76,4 +80,51 @@ public class Connexion {
         }
         return b;
     }
+    
+    public void information(int id, String name, String surname, String spe, String function)
+    {
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            if(function=="Doctor")
+            {
+                sqlStatement = "INSERT INTO `doctor` (`Number`, `Name`, `Surname`, `Specification`) "
+                        + "VALUES ('"+id+"','"+name+"','"+surname+"','"+spe+"');";
+            }
+            else if(function=="Patient")
+            {
+                sqlStatement = "INSERT INTO `patient` (`Number`, `Name`, `Surname`, `Pathology`) "
+                        + "VALUES ('"+id+"','"+name+"','"+surname+"','"+spe+"');";
+            }
+            int rows = stmt.executeUpdate(sqlStatement); 
+            stmt.close();
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public int getLastID()
+    {
+        try
+        { 
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            researchStmt = "SELECT * FROM connexion ORDER BY Id DESC LIMIT 0, 1";
+            ResultSet result = stmt.executeQuery(researchStmt);
+            result.next();
+            id=result.getInt("Id");
+            System.out.println("Id: "+id);
+            result.close();
+            stmt.close();
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return id;
+    }
 }
+
