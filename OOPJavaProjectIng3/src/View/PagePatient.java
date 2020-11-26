@@ -12,12 +12,12 @@ import Model.Appointement;
  * @author ayzac
  */
 public class PagePatient extends javax.swing.JFrame {
-
-    /**
-     * Creates new form PagePatient
-     */
-    public PagePatient() {
+    private int id;
+    
+    public PagePatient(int i) {
+        id = i;
         initComponents();
+        dataUser();
     }
 
     /**
@@ -33,6 +33,15 @@ public class PagePatient extends javax.swing.JFrame {
         String [][] data;
     }
     
+    private void dataUser()
+    {
+        Appointement a = new Appointement();
+        namePatient.setText(a.getNamePatient(id));
+        surnamePatient.setText(a.getSurnamePatient(id));
+        jComboBox3.hide();
+        jComboBox4.hide();
+        jButton2.hide();
+    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -45,15 +54,19 @@ public class PagePatient extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jComboBox3 = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
+        pathology = new javax.swing.JLabel();
+        jComboBox4 = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 153, 255));
 
+        namePatient.setFont(new java.awt.Font("Rockwell Extra Bold", 0, 16)); // NOI18N
         namePatient.setForeground(new java.awt.Color(255, 255, 255));
         namePatient.setText("Name");
 
+        surnamePatient.setFont(new java.awt.Font("Rockwell Extra Bold", 0, 16)); // NOI18N
         surnamePatient.setForeground(new java.awt.Color(255, 255, 255));
         surnamePatient.setText("Surname");
 
@@ -91,6 +104,17 @@ public class PagePatient extends javax.swing.JFrame {
 
         jButton2.setText("Take this appointement");
 
+        pathology.setFont(new java.awt.Font("Rockwell Extra Bold", 0, 16)); // NOI18N
+        pathology.setForeground(new java.awt.Color(255, 255, 255));
+        pathology.setText("Pathology");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select your day", " " }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -105,15 +129,20 @@ public class PagePatient extends javax.swing.JFrame {
                                 .addComponent(namePatient)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(surnamePatient)
-                                    .addComponent(jComboBox2, 0, 277, Short.MAX_VALUE)
-                                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(jComboBox4, 0, 277, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(surnamePatient)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(pathology))
+                                        .addComponent(jComboBox2, 0, 277, Short.MAX_VALUE)
+                                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(127, 127, 127)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
+                        .addGap(130, 130, 130)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(152, Short.MAX_VALUE))
         );
@@ -123,7 +152,8 @@ public class PagePatient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(namePatient)
-                    .addComponent(surnamePatient))
+                    .addComponent(surnamePatient)
+                    .addComponent(pathology))
                 .addGap(49, 49, 49)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -132,9 +162,11 @@ public class PagePatient extends javax.swing.JFrame {
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(79, 79, 79)
+                .addGap(92, 92, 92)
+                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -145,7 +177,7 @@ public class PagePatient extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 482, Short.MAX_VALUE)
+            .addGap(0, 467, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,8 +259,14 @@ public class PagePatient extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        jComboBox3.setVisible(true);
+        jComboBox4.setVisible(true);
+        jButton2.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox4ActionPerformed
 
     
     private javax.swing.JTable appointement;
@@ -238,10 +276,12 @@ public class PagePatient extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel namePatient;
+    private javax.swing.JLabel pathology;
     private javax.swing.JLabel surnamePatient;
     // End of variables declaration//GEN-END:variables
 }

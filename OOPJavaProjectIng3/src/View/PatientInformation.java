@@ -52,6 +52,7 @@ public class PatientInformation extends javax.swing.JFrame {
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setText("Surname");
 
+        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField3.setText("Pathology or particular handicap");
 
         jButton1.setText("OK");

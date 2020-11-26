@@ -203,7 +203,7 @@ public class Application extends javax.swing.JFrame {
         }
         else 
         {
-            new PagePatient().setVisible(true);
+            new PagePatient(id).setVisible(true);
             this.hide();
             System.out.println("Connexion ok");
         }
