@@ -203,7 +203,8 @@ public class Application extends javax.swing.JFrame {
         }
         else 
         {
-            System.out.println("Id : " +id);
+            new PagePatient().setVisible(true);
+            this.hide();
             System.out.println("Connexion ok");
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
