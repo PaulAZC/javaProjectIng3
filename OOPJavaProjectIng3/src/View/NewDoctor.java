@@ -134,11 +134,10 @@ public class NewDoctor extends javax.swing.JFrame {
         }
         if(b==1)
         {
-            new Application().setVisible(true);
+            new DoctorInformation().setVisible(true);
             this.hide();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

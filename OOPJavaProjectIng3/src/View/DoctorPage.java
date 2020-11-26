@@ -125,7 +125,7 @@ public class DoctorPage extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String username = jTextField1.getText(), password = jTextField2.getText();
         Connexion c = new Connexion();
-        int id = c.verifConnection(username, password, "Doctor");
+        id = c.verifConnection(username, password, "Doctor");
         if(id==0)
         {
             System.out.println("Probleme de connection");
@@ -142,6 +142,7 @@ public class DoctorPage extends javax.swing.JFrame {
         this.hide();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public int id;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
