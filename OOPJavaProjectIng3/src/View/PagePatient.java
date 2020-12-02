@@ -8,6 +8,9 @@ package View;
 import java.util.ArrayList;
 import Model.Appointement;
 import Controller.AppointementControl;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.*;
 /**
  *
  * @author ayzac
@@ -16,6 +19,8 @@ public class PagePatient extends javax.swing.JFrame {
     private int id;
     private int idDoctor;
     private ArrayList<Integer> listIdDoctor= new ArrayList<Integer>();
+    private ArrayList<Date> days = new ArrayList<Date>();
+    private ArrayList<Date> hourList = new ArrayList<Date>();
     
     public PagePatient(int i) {
         id = i;
@@ -44,6 +49,7 @@ public class PagePatient extends javax.swing.JFrame {
         jComboBox3.hide();
         jComboBox4.hide();
         jButton2.hide();
+        jButton3.hide();
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -59,6 +65,7 @@ public class PagePatient extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         pathology = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox<>();
+        jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -116,10 +123,18 @@ public class PagePatient extends javax.swing.JFrame {
         pathology.setForeground(new java.awt.Color(255, 255, 255));
         pathology.setText("Pathology");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select your day", " " }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select your day" }));
+        jComboBox4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("OK");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -149,8 +164,11 @@ public class PagePatient extends javax.swing.JFrame {
                         .addGap(127, 127, 127)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(132, 132, 132)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(194, 194, 194)
+                        .addComponent(jButton3)))
                 .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -169,9 +187,11 @@ public class PagePatient extends javax.swing.JFrame {
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(92, 92, 92)
+                .addGap(54, 54, 54)
                 .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3)
+                .addGap(41, 41, 41)
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
@@ -270,28 +290,63 @@ public class PagePatient extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jComboBox3.setVisible(true);
-        jComboBox4.setVisible(true);
-        jButton2.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         idDoctor = listIdDoctor.get(jComboBox2.getSelectedIndex());
-        
-        ArrayList<String> days = new ArrayList<String>();
+                
         AppointementControl a = new AppointementControl();
         
         a.getDays(idDoctor, days);
+              
+        SimpleDateFormat formater = null;
+        
+        formater = new SimpleDateFormat("yyyy-MM-dd");
+        for(int i=0; i<days.size(); i++)
+        {
+            jComboBox4.addItem(formater.format(days.get(i)));
+        }
+        jComboBox4.setVisible(true);
+        jButton3.setVisible(true);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try
+            {
+                AppointementControl a = new AppointementControl();
+        
+                a.getDays(idDoctor, days);
+        
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                
+                Date app = formater.parse(jComboBox4.getSelectedItem().toString());
+
+                a.checkHour(idDoctor, hourList, id, app);
+                formater = new SimpleDateFormat("kk:mm:ss");
+                for(int i=0; i<hourList.size(); i++)
+                {
+                    jComboBox3.addItem(formater.format(hourList.get(i)));
+                }
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            jComboBox3.setVisible(true);
+            jButton2.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
