@@ -129,7 +129,7 @@ public class Appointement {
         return temp;
     }
     
-    public void appointementInformation(int id, String days, String beginDate, String endDate, int duration)
+    public void appointementInformation(int id, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday, String beginDate, String endDate)
     {
         try
         {            
@@ -142,14 +142,14 @@ public class Appointement {
             if(result.next())
             {
                 sqlStatement = "UPDATE `doctorschedule` " +
-                                "SET Days='"+days+"', BeginTime='"+beginDate+"', EndTime='"+endDate+"', TimeOfSession='"+duration+"'" +
+                                "SET Monday='"+monday+"', Tuesday='"+tuesday+"', Wednesday='"+wednesday+"', Thursday='"+thursday+"', Friday='"+friday+"', Saturday='"+saturday+"', Sunday='"+sunday+"', "
+                                + "BeginTime='"+beginDate+"', EndTime='"+endDate+"'"+
                                 "WHERE IDDoctor="+id+";";
             }
             else{
-                sqlStatement = "INSERT INTO doctorschedule " +
-                      "(`IDDoctor`, `TimeOfSession`, `Days`, `BeginTime`, `EndTime`)" +
-                      " VALUES " +
-                      "('"+id+"','"+duration+"','"+days+"','"+beginDate+"','"+endDate+"')";
+                sqlStatement = "INSERT INTO `doctorschedule` (`IDDoctor`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`, `BeginTime`, `EndTime`)"+
+                                "VALUES ('"+id+"', '"+monday+"', '"+tuesday+"', '"+wednesday+"', '"+thursday+"', '"+friday+"', '"+saturday+"', '"+sunday+"',"
+                                + " '"+beginDate+"', '"+endDate+"')";
             }
             int rows = stmt.executeUpdate(sqlStatement);
             System.out.println("Informations ok");

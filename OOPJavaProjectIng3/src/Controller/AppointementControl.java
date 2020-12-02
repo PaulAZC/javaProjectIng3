@@ -21,6 +21,7 @@ public class AppointementControl {
     private String sqlStatement;
     private String researchStmt;
     private String temp;
+    private int bool;
 
     public void checkAppointement(int IDDoctor, String hour, String date)
     {
@@ -49,5 +50,10 @@ public class AppointementControl {
         {
             System.out.println(e.getMessage());
         }
+    }
+    
+    public void getDays(int idDoctor, ArrayList<String> days)
+    {
+        
     }
 }

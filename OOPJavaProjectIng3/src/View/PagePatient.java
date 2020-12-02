@@ -7,12 +7,15 @@ package View;
 
 import java.util.ArrayList;
 import Model.Appointement;
+import Controller.AppointementControl;
 /**
  *
  * @author ayzac
  */
 public class PagePatient extends javax.swing.JFrame {
     private int id;
+    private int idDoctor;
+    private ArrayList<Integer> listIdDoctor= new ArrayList<Integer>();
     
     public PagePatient(int i) {
         id = i;
@@ -217,7 +220,7 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
-            
+            listIdDoctor = nameDoctor;
         }
         else if("Cardiology".equals(jComboBox1.getSelectedItem().toString()))
         {
@@ -229,6 +232,7 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
+            listIdDoctor = nameDoctor;
         }
         else if("Orthopedics".equals(jComboBox1.getSelectedItem().toString()))
         {
@@ -240,6 +244,7 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
+            listIdDoctor = nameDoctor;
         }
         else if("Physiotherapy".equals(jComboBox1.getSelectedItem().toString()))
         {
@@ -251,7 +256,9 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
+            listIdDoctor = nameDoctor;
         }
+        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jComboBox2ComponentHidden
@@ -269,7 +276,12 @@ public class PagePatient extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
+        idDoctor = listIdDoctor.get(jComboBox2.getSelectedIndex());
+        
+        ArrayList<String> days = new ArrayList<String>();
+        AppointementControl a = new AppointementControl();
+        
+        a.getDays(idDoctor, days);
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -277,7 +289,6 @@ public class PagePatient extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     
-    private javax.swing.JTable appointement;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
