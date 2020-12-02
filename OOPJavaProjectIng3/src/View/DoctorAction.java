@@ -5,6 +5,10 @@
  */
 package View;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import Model.Appointement;
 /**
  *
  * @author ayzac
@@ -51,6 +55,11 @@ public class DoctorAction extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(102, 153, 255));
 
         jButton1.setText("Edit my disponobilities");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jCheckBox1.setText("Monday");
 
@@ -77,12 +86,12 @@ public class DoctorAction extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("From");
 
-        jTextField2.setText("Define start time of days");
+        jTextField2.setText("HH:MM:SS");
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("To");
 
-        jTextField3.setText("Define end time of days");
+        jTextField3.setText("HH:MM:SS");
 
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Select days of work :");
@@ -91,6 +100,11 @@ public class DoctorAction extends javax.swing.JFrame {
         jLabel4.setText("Edit your schedule");
 
         jButton2.setText("My schedule");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -137,7 +151,7 @@ public class DoctorAction extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(443, 443, 443)
                         .addComponent(jLabel4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -157,7 +171,7 @@ public class DoctorAction extends javax.swing.JFrame {
                     .addComponent(jCheckBox5)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jCheckBox6)
                     .addComponent(jCheckBox7))
                 .addGap(51, 51, 51)
@@ -190,6 +204,53 @@ public class DoctorAction extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox6ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Appointement a = new Appointement();
+        if(jCheckBox1.isSelected())
+        {
+            days+="Monday ";
+        }
+        if(jCheckBox2.isSelected())
+        {
+            days+="Tuesday ";
+        }
+        if(jCheckBox3.isSelected())
+        {
+            days+="Wednesday ";
+        }
+        if(jCheckBox4.isSelected())
+        {
+            days+="Thursday ";
+        }
+        if(jCheckBox5.isSelected())
+        {
+            days+="Friday ";
+        }
+        if(jCheckBox6.isSelected())
+        {
+            days+="Saturday ";
+        }
+        if(jCheckBox7.isSelected())
+        {
+            days+="Sunday ";
+        }
+        duration = Integer.parseInt(jTextField1.getText());
+        
+        beginDate = jTextField2.getText(); 
+        endDate = jTextField3.getText();
+        
+        a.appointementInformation(id, days, beginDate, endDate, duration);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.hide();
+        new DoctorSchedule(id).setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private String days="";
+    private String beginDate="", endDate="";
+    private int duration;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

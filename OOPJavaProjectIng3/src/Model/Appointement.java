@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -126,5 +127,57 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
         return temp;
+    }
+    
+    public void appointementInformation(int id, String days, String beginDate, String endDate, int duration)
+    {
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+
+            researchStmt = "SELECT * FROM `doctorschedule` WHERE IDDoctor="+id;
+            ResultSet result = stmt.executeQuery(researchStmt);
+            
+            if(result.next())
+            {
+                sqlStatement = "UPDATE `doctorschedule` " +
+                                "SET Days='"+days+"', BeginTime='"+beginDate+"', EndTime='"+endDate+"', TimeOfSession='"+duration+"'" +
+                                "WHERE IDDoctor="+id+";";
+            }
+            else{
+                sqlStatement = "INSERT INTO doctorschedule " +
+                      "(`IDDoctor`, `TimeOfSession`, `Days`, `BeginTime`, `EndTime`)" +
+                      " VALUES " +
+                      "('"+id+"','"+duration+"','"+days+"','"+beginDate+"','"+endDate+"')";
+            }
+            int rows = stmt.executeUpdate(sqlStatement);
+            System.out.println("Informations ok");
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void addAppointement(int idDoctor, int idPatient, String dateTime, String note)
+    {
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+
+            sqlStatement = "INSERT INTO appointement " +
+                      "(`IDPatient`, `IDDoctor`, `Date`, `Note`)" +
+                      " VALUES " +
+                      "('"+idPatient+"','"+idDoctor+"','"+dateTime+"','"+note+"')";
+            
+            int rows = stmt.executeUpdate(sqlStatement);
+            System.out.println("Appointement ok");
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 }
