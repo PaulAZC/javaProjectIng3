@@ -132,7 +132,8 @@ public class DoctorPage extends javax.swing.JFrame {
         }
         else 
         {
-            System.out.println("Id : " +id);
+            new DoctorAction(id).setVisible(true);
+            this.hide();
             System.out.println("Connexion ok");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
