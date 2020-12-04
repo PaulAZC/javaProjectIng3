@@ -27,6 +27,7 @@ public class AppointementControl {
     private String researchStmt;
     private String temp;
     private int bool;
+    private int monday=1, tuesday=1, wednesday=1, thursday=1, friday=1, saturday=1, sunday=1;
 
     public void checkAppointement(int IDDoctor, String hour, String date)
     {
@@ -67,6 +68,10 @@ public class AppointementControl {
         Date day5 = new Date();
         Date day6 = new Date();
         
+        ArrayList<Date> tempD = new ArrayList<Date>();
+        ArrayList<Integer> listI = new ArrayList<Integer>();
+        
+        
         SimpleDateFormat formater = null;
         formater = new SimpleDateFormat("yyyy-MM-dd");
         formater.format(today);
@@ -96,6 +101,109 @@ public class AppointementControl {
         days.add(day4);
         days.add(day5);
         days.add(day6);
+        
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            
+            sqlStatement = "SELECT * FROM doctorschedule WHERE IDDoctor='"+idDoctor+"'";
+            
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            while(result.next())
+            {
+               monday = result.getInt("Monday");
+               tuesday = result.getInt("Tuesday");
+               wednesday = result.getInt("Wednesday");
+               thursday = result.getInt("Thursday");
+               friday = result.getInt("Friday");
+               saturday = result.getInt("Saturday");
+               sunday = result.getInt("Sunday");
+            }
+            result.close();
+            stmt.close();
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        formater = new SimpleDateFormat("EEEEEEEE");
+        formater.format(today);
+        
+        day1 = addDaysToDate(today, 1);
+        formater.format(day1);
+        
+        day2 = addDaysToDate(today, 2);
+        formater.format(day2);
+        
+        day3 = addDaysToDate(today, 3);
+        formater.format(day3);
+        
+        day4 = addDaysToDate(today, 4);
+        formater.format(day4);
+        
+        day5 = addDaysToDate(today, 5);
+        formater.format(day5);
+        
+        day6 = addDaysToDate(today, 6);
+        formater.format(day6);
+        
+        tempD.add(today);
+        tempD.add(day1);
+        tempD.add(day2);
+        tempD.add(day3);
+        tempD.add(day4);
+        tempD.add(day5);
+        tempD.add(day6);
+        
+        String temp;
+        for(int i=0; i<tempD.size(); i++)
+        {
+            temp = formater.format(tempD.get(i));
+            
+            if(temp.equals("dimanche") && sunday==0)
+            {
+                listI.add(i);
+            }
+            else if(temp.equals("samedi") && saturday==0)
+            {
+                listI.add(i);
+            }
+            else if(temp.equals("lundi") && monday==0)
+            {
+                listI.add(i);
+            }
+            else if(temp.equals("mardi") && tuesday==0)
+            {
+                listI.add(i);
+            }
+            else if(temp.equals("mercredi") && wednesday==0)
+            {
+                listI.add(i);
+            }
+            else if(temp.equals("jeudi") && thursday==0)
+            {
+                listI.add(i);
+            }
+            else if(temp.equals("vendredi") && friday==0)
+            {
+                listI.add(i);
+            }
+        }
+        
+        tempD.clear();
+        for(int i=0; i<listI.size();i++)
+        {
+            tempD.add(days.get(listI.get(i)));
+        }
+        
+        Date remove = new Date();
+        for(int i=0; i<tempD.size();i++)
+        {
+            remove=tempD.get(i);
+            days.remove(remove);
+        }
     }
     
     public static Date addDaysToDate(Date date, int nbDays){

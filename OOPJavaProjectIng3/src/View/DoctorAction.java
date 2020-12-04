@@ -31,6 +31,7 @@ public class DoctorAction extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBox8 = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jCheckBox1 = new javax.swing.JCheckBox();
@@ -47,6 +48,8 @@ public class DoctorAction extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+
+        jCheckBox8.setText("jCheckBox8");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -225,9 +228,8 @@ public class DoctorAction extends javax.swing.JFrame {
         }
         if(jCheckBox7.isSelected())
         {
-           sunday=1;
+            sunday=1;
         }
-        
         beginDate = jTextField2.getText(); 
         endDate = jTextField3.getText();
         
@@ -242,7 +244,6 @@ public class DoctorAction extends javax.swing.JFrame {
     
     private String beginDate="", endDate="";
     private int monday=0, tuesday=0, wednesday=0, thursday=0, friday=0, saturday=0, sunday=0;
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -253,6 +254,7 @@ public class DoctorAction extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JCheckBox jCheckBox7;
+    private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

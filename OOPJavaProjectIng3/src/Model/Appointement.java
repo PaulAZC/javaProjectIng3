@@ -129,7 +129,7 @@ public class Appointement {
         return temp;
     }
     
-    public void appointementInformation(int id, int monday, int tuesday, int wednesday, int thursday, int friday, int saturday, int sunday, String beginDate, String endDate)
+    public void appointementInformation(int id, int monday, int tuesday,  int wednesday, int thursday, int friday, int saturday, int sunday, String beginDate, String endDate)
     {
         try
         {            

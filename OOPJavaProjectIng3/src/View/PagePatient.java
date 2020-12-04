@@ -20,6 +20,7 @@ public class PagePatient extends javax.swing.JFrame {
     private int idDoctor;
     private ArrayList<Integer> listIdDoctor= new ArrayList<Integer>();
     private ArrayList<Date> days = new ArrayList<Date>();
+    private ArrayList<Date> tempDays = new ArrayList<Date>();
     private ArrayList<Date> hourList = new ArrayList<Date>();
     
     public PagePatient(int i) {
@@ -299,12 +300,15 @@ public class PagePatient extends javax.swing.JFrame {
         SimpleDateFormat formater = null;
         
         formater = new SimpleDateFormat("yyyy-MM-dd");
+        jComboBox4.removeAllItems();
         for(int i=0; i<days.size(); i++)
         {
             jComboBox4.addItem(formater.format(days.get(i)));
         }
         jComboBox4.setVisible(true);
         jButton3.setVisible(true);
+        tempDays=days;
+        days.clear();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -321,7 +325,7 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 AppointementControl a = new AppointementControl();
         
-                a.getDays(idDoctor, days);
+                a.getDays(idDoctor, tempDays);
         
                 SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
                 
@@ -329,6 +333,7 @@ public class PagePatient extends javax.swing.JFrame {
 
                 a.checkHour(idDoctor, hourList, id, app);
                 formater = new SimpleDateFormat("kk:mm:ss");
+                jComboBox3.removeAll();
                 for(int i=0; i<hourList.size(); i++)
                 {
                     jComboBox3.addItem(formater.format(hourList.get(i)));
