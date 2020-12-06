@@ -186,7 +186,7 @@ public class AppointementControl {
         return cal.getTime();
     }
     
-    public void checkHour(int idDoctor, ArrayList<Date> returnList, int idPatient, Date app)
+    public void checkHour(int idDoctor, ArrayList<Date> returnList, Date app)
     {
         ArrayList<Date> list = new ArrayList<Date>();
         
@@ -323,5 +323,94 @@ public class AppointementControl {
         }
         
         return returnTab;
+    }
+    
+    public void checkHourDoctor(int idDoctor, ArrayList<Date> returnList, Date app)
+    {
+        ArrayList<Date> list = new ArrayList<Date>();
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("kk:mm:ss");
+        
+        try{
+            Date date = formatter.parse("08:00:00");
+            list.add(date);
+            date = formatter.parse("09:00:00");
+            list.add(date);
+            date = formatter.parse("10:00:00"); 
+            list.add(date);
+            date = formatter.parse("11:00:00");
+            list.add(date);
+            date = formatter.parse("12:00:00");
+            list.add(date);
+            date = formatter.parse("13:00:00");
+            list.add(date);
+            date = formatter.parse("14:00:00"); 
+            list.add(date);
+            date = formatter.parse("15:00:00");
+            list.add(date);
+            date = formatter.parse("16:00:00"); 
+            list.add(date);
+            date = formatter.parse("17:00:00");
+            list.add(date);
+            date = formatter.parse("18:00:00");
+            list.add(date);
+            date = formatter.parse("19:00:00");
+            list.add(date);
+            date = formatter.parse("20:00:00");
+            list.add(date);
+            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            
+            sqlStatement = "SELECT * FROM doctorschedule WHERE IDDoctor='"+idDoctor+"'";
+            
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            result.next();
+            Date begin = formatter.parse(result.getString("BeginTime"));
+            Date end = formatter.parse(result.getString("EndTime"));
+            
+            for(int i=0; i<list.size(); i++)
+            {
+                if(list.get(i).compareTo(begin)==0 || list.get(i).compareTo(begin)>0)
+                {
+                    if(list.get(i).compareTo(end)==0 || list.get(i).compareTo(end)<0)
+                    {
+                        returnList.add(list.get(i));
+                    }
+                }
+            }
+            result.close();
+            
+            sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+idDoctor+"'";
+            result = stmt.executeQuery(sqlStatement);
+            Date time = new Date();
+            Date d = new Date();
+            while(result.next())
+            {
+                for(int i=0; i<returnList.size(); i++)
+                {
+                    formatter = new SimpleDateFormat("kk:mm:ss");
+                    time = formatter.parse(result.getString("Time"));
+                    
+                    formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    d = formatter.parse(result.getString("Date"));
+                    
+                            
+                    if(returnList.get(i).compareTo(time)==0 && d.compareTo(app)==0)
+                    {
+                        returnList.remove(i);
+                    }
+                }
+            }
+            
+            
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }  
     }
 }
