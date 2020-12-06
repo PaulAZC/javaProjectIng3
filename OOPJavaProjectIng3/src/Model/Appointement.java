@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import Controller.AppointementControl;
 
 /**
  *
@@ -160,7 +161,7 @@ public class Appointement {
         }
     }
     
-    public void addAppointement(int idDoctor, int idPatient, String dateTime, String note)
+    public void addAppointement(int idDoctor, int idPatient, String date, String time, String note)
     {
         try
         {            
@@ -168,12 +169,153 @@ public class Appointement {
             Statement stmt = co.createStatement();
 
             sqlStatement = "INSERT INTO appointement " +
-                      "(`IDPatient`, `IDDoctor`, `Date`, `Note`)" +
+                      "(`IDPatient`, `IDDoctor`, `Date`, `Time`, `Note`)" +
                       " VALUES " +
-                      "('"+idPatient+"','"+idDoctor+"','"+dateTime+"','"+note+"')";
+                      "('"+idPatient+"','"+idDoctor+"','"+date+"','"+time+"','"+note+"')";
             
             int rows = stmt.executeUpdate(sqlStatement);
             System.out.println("Appointement ok");
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void getDatePatient(ArrayList<String> list, int id)
+    {
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            
+            sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+id+"' ORDER BY Date DESC";
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            
+            while(result.next())
+            {
+                list.add(result.getString("Date"));
+            }
+            
+            result.close();
+            stmt.close();
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void getHourPatient(ArrayList<String> list, int id, String date)
+    {
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            
+            sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+id+"' && Date='"+date+"' ORDER BY Date DESC";
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            
+            while(result.next())
+            {
+                list.add(result.getString("Time"));
+            }
+            
+            result.close();
+            stmt.close();
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void removeApp(String date, String time)
+    {
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+                        
+            sqlStatement = "DELETE FROM appointement WHERE Date='"+date+"' && Time='"+time+"'";
+            int rows = stmt.executeUpdate(sqlStatement);
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void getListDateDoctor(String date, String time, int idPatient, ArrayList<Date> list)
+    {
+        try
+        {            
+            int idDoctor;
+            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+                        
+            sqlStatement = "SELECT * FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            result.next();
+            idDoctor=result.getInt("IDDoctor");
+            result.close();
+            
+            AppointementControl a = new AppointementControl();
+            a.getDays(idDoctor, list);
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void getListHourDoctor(String date, String time, int idPatient, ArrayList<Date> list, Date dateChoice)
+    {
+        try
+        {            
+            int idDoctor;
+            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+                        
+            sqlStatement = "SELECT * FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            result.next();
+            idDoctor=result.getInt("IDDoctor");
+            result.close();
+            
+            AppointementControl a = new AppointementControl();
+            a.checkHour(idDoctor, list, idPatient, dateChoice);
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void modifApp(String actualDate, String actualTime, String newDate, String newTime, int idPatient)
+    {
+        try
+        {            
+            int idDoctor;
+            String notes;
+            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            
+            sqlStatement = "SELECT * FROM appointement WHERE Date='"+actualDate+"' && Time='"+actualTime+"' && IDPatient='"+idPatient+"'";
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            result.next();
+            idDoctor=result.getInt("IDDoctor");
+            notes=result.getString("Note");
+            result.close();
+            
+            sqlStatement = "DELETE FROM appointement WHERE DATE='"+actualDate+"' && Time='"+actualTime+"' && IDPatient='"+idPatient+"'";
+            int rows = stmt.executeUpdate(sqlStatement);
+            
+            Appointement a = new Appointement();
+            a.addAppointement(idDoctor, idPatient, newDate, newTime, notes);
         }
         catch(SQLException e)
         {

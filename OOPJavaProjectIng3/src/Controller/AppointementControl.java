@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import Model.Appointement;
 
 /**
  *
@@ -28,35 +29,7 @@ public class AppointementControl {
     private String temp;
     private int bool;
     private int monday=1, tuesday=1, wednesday=1, thursday=1, friday=1, saturday=1, sunday=1;
-
-    public void checkAppointement(int IDDoctor, String hour, String date)
-    {
-        try
-        {            
-            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
-            Statement stmt = co.createStatement();
-            
-            sqlStatement = "SELECT * FROM doctorschedule WHERE IDDoctor='"+IDDoctor+"'";
-            
-            ResultSet result = stmt.executeQuery(sqlStatement);
-            while(result.next())
-            {
-                int h1 = Integer.parseInt(hour);
-                int begin = Integer.parseInt(result.getString("BeginTime"));
-                int end = Integer.parseInt(result.getString("EndTime"));
-                
-                System.out.println("Begin="+begin);
-                System.out.println("End="+end);
-                System.out.println("Hour="+hour);
-            }
-            result.close();
-            stmt.close();
-        }
-        catch(SQLException e)
-        {
-            System.out.println(e.getMessage());
-        }
-    }
+    private String [][] returnTab;
     
     public void getDays(int idDoctor, ArrayList<Date> days)
     {
@@ -269,7 +242,7 @@ public class AppointementControl {
             }
             result.close();
             
-            sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+idDoctor+"' && IDPatient='"+idPatient+"'";
+            sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+idDoctor+"'";
             result = stmt.executeQuery(sqlStatement);
             Date time = new Date();
             Date d = new Date();
@@ -300,5 +273,55 @@ public class AppointementControl {
         catch(Exception e){
             System.out.println(e.getMessage());
         }  
+    }
+    
+    public String[][] tableAppointement(ArrayList<ArrayList<String>> data, int idPatient)
+    {
+        try
+        {            
+            Connection co = DriverManager.getConnection(URL, "root", "paul1234");
+            Statement stmt = co.createStatement();
+            
+            Appointement a = new Appointement();
+            int idDoctor;
+            
+            String doctor;
+            
+            
+            sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+idPatient+"' ORDER BY Date DESC";
+            
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            
+            while(result.next())
+            {
+                ArrayList<String> temp  = new ArrayList<String>();
+                idDoctor = Integer.parseInt(result.getString("IDDoctor"));
+                temp.add(a.getNameDoctor(idDoctor));
+                temp.add(result.getString("Date"));
+                temp.add(result.getString("Time"));
+                temp.add(result.getString("Note"));
+                
+                data.add(temp);
+            }
+            result.close();
+            stmt.close();
+            
+            returnTab = new String[data.size()][4];
+        
+            for(int j=0; j<data.size(); j++)
+            {
+                returnTab[j][0] = data.get(j).get(0);
+                returnTab[j][1] = data.get(j).get(1);
+                returnTab[j][2] = data.get(j).get(2);
+                returnTab[j][3] = data.get(j).get(3);
+            }
+        
+        }
+        catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return returnTab;
     }
 }
