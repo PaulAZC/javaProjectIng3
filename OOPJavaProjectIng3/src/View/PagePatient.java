@@ -7,16 +7,38 @@ package View;
 
 import java.util.ArrayList;
 import Model.Appointement;
+import Controller.AppointementControl;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
 /**
  *
  * @author ayzac
  */
 public class PagePatient extends javax.swing.JFrame {
     private int id;
+    private int idDoctor;
+    private ArrayList<Integer> listIdDoctor= new ArrayList<Integer>();
+    private ArrayList<Date> days = new ArrayList<Date>();
+    private ArrayList<Date> tempDays = new ArrayList<Date>();
+    private ArrayList<Date> hourList = new ArrayList<Date>();
+    private ArrayList<Date> hourList2 = new ArrayList<Date>();
+    private ArrayList<Date> listDayDoctor = new ArrayList<Date>();
+    private Date dayApp = new Date();
+    private String day;
+    private String hourApp;
+    private String notes;
+    private ArrayList<String> datePatient = new ArrayList<String>();
+    private ArrayList<String> hourPatient = new ArrayList<String>();
+    private ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+    String [][] values;
     
     public PagePatient(int i) {
         id = i;
         initComponents();
+        initChangeApp();
         dataUser();
     }
 
@@ -27,20 +49,83 @@ public class PagePatient extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     
-    private void displayAppointement()
+    private void initChangeApp()
     {
-        String [] colnames = {"Doctor", "Hour"};
-        String [][] data;
+        Appointement a = new Appointement();
+        a.getDatePatient(datePatient, id);
+        
+        
+        for(int i=0; i<datePatient.size(); i++)
+            for(int j=0; j<datePatient.size(); j++)
+        {
+            if(i!=j)
+            {
+                if(datePatient.get(i).equals(datePatient.get(j)))
+                {
+                    datePatient.remove(i);
+                }
+            }
+        }
+        try
+        {
+            ArrayList<Date> temp = new ArrayList<Date>();
+            ArrayList<Date> temp2 = new ArrayList<Date>();
+            
+            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+
+            for(int i=0; i<datePatient.size(); i++)
+            {
+                temp.add(formater.parse(datePatient.get(i)));
+            }
+            Date today = new Date();
+            
+            for(int i=0; i<temp.size(); i++)
+            {
+                if(temp.get(i).compareTo(today)==-1)
+                {
+                    temp2.add(temp.get(i));
+                }
+            }
+            for(int i=0; i<temp2.size(); i++)
+            {
+                temp.remove(temp2.get(i));
+            }
+            
+            datePatient.clear();
+            for(int i=0; i<temp.size(); i++)
+            {
+                datePatient.add(formater.format(temp.get(i)));
+            }
+            
+            for(int i=0; i<datePatient.size(); i++)
+            {
+                jComboBox5.addItem(datePatient.get(i));
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
     
     private void dataUser()
     {
         Appointement a = new Appointement();
+        AppointementControl ac = new AppointementControl();
         namePatient.setText(a.getNamePatient(id));
         surnamePatient.setText(a.getSurnamePatient(id));
         jComboBox3.hide();
         jComboBox4.hide();
+        jComboBox7.hide();
+        jComboBox8.hide();
         jButton2.hide();
+        jButton3.hide();
+        jTextField1.hide();
+        jLabel6.hide();
+        jLabel7.hide();
+        jButton7.hide();
+        
+        values = ac.tableAppointement(data, id);
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -56,7 +141,22 @@ public class PagePatient extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         pathology = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        javax.swing.JPanel jPanel2 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jComboBox6 = new javax.swing.JComboBox<>();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox7 = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBox8 = new javax.swing.JComboBox<>();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,12 +213,23 @@ public class PagePatient extends javax.swing.JFrame {
         pathology.setForeground(new java.awt.Color(255, 255, 255));
         pathology.setText("Pathology");
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select your day", " " }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select your day" }));
+        jComboBox4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
             }
         });
+
+        jButton3.setText("OK");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.setText("Notes about the appointement");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -134,20 +245,25 @@ public class PagePatient extends javax.swing.JFrame {
                                 .addComponent(namePatient)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox4, 0, 277, Short.MAX_VALUE)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(surnamePatient)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(pathology))
-                                    .addComponent(jComboBox2, 0, 277, Short.MAX_VALUE)
-                                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jComboBox4, 0, 277, Short.MAX_VALUE)
+                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(surnamePatient)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(pathology))
+                                        .addComponent(jComboBox2, 0, 277, Short.MAX_VALUE)
+                                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(127, 127, 127)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(132, 132, 132)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(199, 199, 199)
+                        .addComponent(jButton3)))
                 .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,26 +282,161 @@ public class PagePatient extends javax.swing.JFrame {
                 .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(92, 92, 92)
+                .addGap(54, 54, 54)
                 .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(13, 13, 13)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        jButton4.setText("Check my appointements");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Rockwell Extra Bold", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 153, 255));
+        jLabel3.setText("Select an existing appointement");
+
+        jLabel4.setText("The");
+
+        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox5ActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("At");
+
+        jComboBox6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox6ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Delete");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setText("Modify ");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("To the");
+
+        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox7ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("At");
+
+        jButton7.setText("OK");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 467, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(147, 147, 147)
+                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(211, 211, 211))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(102, 102, 102))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 30, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(214, 214, 214))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(209, 209, 209))
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(224, 224, 224))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton7)
+                        .addGap(203, 203, 203))))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(96, Short.MAX_VALUE)
+                    .addComponent(jLabel3)
+                    .addGap(75, 75, 75)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(62, 62, 62)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton7)
+                .addContainerGap(64, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(92, 92, 92)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(455, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -217,7 +468,7 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
-            
+            listIdDoctor = nameDoctor;
         }
         else if("Cardiology".equals(jComboBox1.getSelectedItem().toString()))
         {
@@ -229,6 +480,7 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
+            listIdDoctor = nameDoctor;
         }
         else if("Orthopedics".equals(jComboBox1.getSelectedItem().toString()))
         {
@@ -240,6 +492,7 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
+            listIdDoctor = nameDoctor;
         }
         else if("Physiotherapy".equals(jComboBox1.getSelectedItem().toString()))
         {
@@ -251,7 +504,9 @@ public class PagePatient extends javax.swing.JFrame {
             {
                 jComboBox2.addItem(a.getNameDoctor(nameDoctor.get(i)));
             }
+            listIdDoctor = nameDoctor;
         }
+        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox2ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jComboBox2ComponentHidden
@@ -259,35 +514,202 @@ public class PagePatient extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ComponentHidden
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jComboBox3.setVisible(true);
+        idDoctor = listIdDoctor.get(jComboBox2.getSelectedIndex());
+                
+        AppointementControl a = new AppointementControl();
+        
+        a.getDays(idDoctor, days);
+              
+        SimpleDateFormat formater = null;
+        
+        formater = new SimpleDateFormat("yyyy-MM-dd");
+        jComboBox4.removeAllItems();
+        for(int i=0; i<days.size(); i++)
+        {
+            jComboBox4.addItem(formater.format(days.get(i)));
+        }
         jComboBox4.setVisible(true);
-        jButton2.setVisible(true);
+        jButton3.setVisible(true);
+       
+        tempDays=days;
+        days.clear();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+       hourApp = jComboBox3.getSelectedItem().toString();
+       
+       SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");      
+       day=formater.format(dayApp);
+               
+       notes = jTextField1.getText();
+       
+       Appointement a = new Appointement();
+       a.addAppointement(idDoctor, id, day, hourApp, notes);
+       allClear();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try
+            {
+                AppointementControl a = new AppointementControl();
+        
+                a.getDays(idDoctor, tempDays);
+        
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                
+                dayApp = formater.parse(jComboBox4.getSelectedItem().toString());
+
+                a.checkHour(idDoctor, hourList, id, dayApp);
+                formater = new SimpleDateFormat("kk:mm:ss");
+                jComboBox3.removeAllItems();
+                for(int i=0; i<hourList.size(); i++)
+                {
+                    jComboBox3.addItem(formater.format(hourList.get(i)));
+                }
+                hourList.clear();
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+            jComboBox3.setVisible(true);
+            jButton2.setVisible(true);
+            jTextField1.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.hide();
+        new ScheduleTest(values, id).setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
+        Appointement a = new Appointement();
+        hourPatient.clear();
+        a.getHourPatient(hourPatient, id, jComboBox5.getSelectedItem().toString());
+        jComboBox6.removeAllItems();
+        
+        for(int i=0; i<hourPatient.size(); i++)
+        {
+            jComboBox6.addItem(hourPatient.get(i));
+        }
+    }//GEN-LAST:event_jComboBox5ActionPerformed
+
+    private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Appointement a = new Appointement();
+        a.removeApp(jComboBox5.getSelectedItem().toString(), jComboBox6.getSelectedItem().toString());
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Appointement a = new Appointement();
+        a.getListDateDoctor(jComboBox5.getSelectedItem().toString(), jComboBox6.getSelectedItem().toString(), id, listDayDoctor);
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+        for(int i=0; i<listDayDoctor.size(); i++)
+        {
+            jComboBox7.addItem(formater.format(listDayDoctor.get(i)));
+        }
+        
+        jLabel6.setVisible(true);
+        jLabel7.setVisible(true);
+        jComboBox7.setVisible(true);
+        jComboBox8.setVisible(true);
+        jButton7.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
+        try
+            {
+                Appointement a = new Appointement();
+                
+                SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+                
+                dayApp = formater.parse(jComboBox7.getSelectedItem().toString());
+             
+                a.getListHourDoctor(jComboBox5.getSelectedItem().toString(), jComboBox6.getSelectedItem().toString(), id, hourList2, formater.parse(jComboBox7.getSelectedItem().toString()));
+                
+                formater = new SimpleDateFormat("kk:mm:ss");
+                jComboBox8.removeAllItems();
+                for(int i=0; i<hourList2.size(); i++)
+                {
+                    jComboBox8.addItem(formater.format(hourList2.get(i)));
+                }
+                hourList2.clear();
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+    }//GEN-LAST:event_jComboBox7ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        Appointement a = new Appointement();
+        a.modifApp(jComboBox5.getSelectedItem().toString(), jComboBox6.getSelectedItem().toString(), jComboBox7.getSelectedItem().toString(), jComboBox8.getSelectedItem().toString(), id);
+        
+        hourList2.clear();
+        listDayDoctor.clear();
+        
+        jComboBox7.hide();
+        jComboBox8.hide();
+        jButton7.hide();
+        jLabel6.hide();
+        jLabel7.hide();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void allClear()
+    {
+        jComboBox3.removeAllItems();
+        jComboBox4.removeAllItems();
+        jTextField1.setText("Notes about the appointement");
+        
+        hourList.clear();
+        days.clear();
+        
+        jComboBox3.hide();
+        jComboBox4.hide();
+        jButton2.hide();
+        jButton3.hide();
+        jTextField1.hide();
+        
+    }
     
-    private javax.swing.JTable appointement;
+    
+    private JTable table;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JComboBox<String> jComboBox5;
+    private javax.swing.JComboBox<String> jComboBox6;
+    private javax.swing.JComboBox<String> jComboBox7;
+    private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel namePatient;
     private javax.swing.JLabel pathology;
     private javax.swing.JLabel surnamePatient;
