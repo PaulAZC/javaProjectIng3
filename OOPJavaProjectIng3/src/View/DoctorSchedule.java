@@ -4,20 +4,32 @@
  * and open the template in the editor.
  */
 package View;
-
+import java.util.*;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import Model.Appointement;
+import Controller.AppointementControl;
+import java.text.SimpleDateFormat;
 /**
  *
  * @author ayzac
  */
 public class DoctorSchedule extends javax.swing.JFrame {
-
+    private ArrayList<String> infoPatient = new ArrayList<String>();
+    private ArrayList<String> days = new ArrayList<String>();
+     private ArrayList<Date> days2 = new ArrayList<Date>();
+     private ArrayList<Date> hours2 = new ArrayList<Date>();
+    private ArrayList<String> hours = new ArrayList<String>();
     /**
      * Creates new form DoctorSchedule
      */
     public DoctorSchedule(int i) {
+        id=i;
         initComponents();
         init();
-        id=i;
+        loadTable();
     }
 
     /**
@@ -47,10 +59,22 @@ public class DoctorSchedule extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {"08:00:00", null, null, null, null, null, null, null},
+                {"09:00:00", null, null, null, null, null, null, null},
+                {"10:00:00", null, null, null, null, null, null, null},
+                {"11:00:00", null, null, null, null, null, null, null},
+                {"12:00:00", null, null, null, null, null, null, null},
+                {"13:00:00", null, null, null, null, null, null, null},
+                {"14:00:00", null, null, null, null, null, null, null},
+                {"15:00:00", null, null, null, null, null, null, null},
+                {"16:00:00", null, null, null, null, null, null, null},
+                {"17:00:00", null, null, null, null, null, null, null},
+                {"18:00:00", null, null, null, null, null, null, null},
+                {"19:00:00", null, null, null, null, null, null, null},
+                {"20:00:00", null, null, null, null, null, null, null}
             },
             new String [] {
-
+                "Days/Hours", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
             }
         ));
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -62,7 +86,12 @@ public class DoctorSchedule extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Quit");
+        jButton1.setText("Disconnect");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Go to edit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -73,36 +102,73 @@ public class DoctorSchedule extends javax.swing.JFrame {
 
         jButton3.setText("Select");
         jButton3.setPreferredSize(new java.awt.Dimension(73, 51));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hours", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Days", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", " " }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Move to");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Days", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hours", "08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Move");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1028, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, 0, 112, Short.MAX_VALUE)
+                    .addComponent(jComboBox2, 0, 110, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBox3, 0, 110, Short.MAX_VALUE)
                     .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -113,9 +179,6 @@ public class DoctorSchedule extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -134,12 +197,38 @@ public class DoctorSchedule extends javax.swing.JFrame {
                 .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 96, Short.MAX_VALUE))
+            .addComponent(jScrollPane1)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void loadTable()
+    {
+        ArrayList<String> hours = new ArrayList<String>();
+        hours.add("08:00:00");
+        hours.add("09:00:00");
+        hours.add("10:00:00");
+        hours.add("11:00:00");
+        hours.add("12:00:00");
+        hours.add("13:00:00");
+        hours.add("14:00:00");
+        hours.add("15:00:00");
+        hours.add("16:00:00");
+        hours.add("17:00:00");
+        hours.add("18:00:00");
+        hours.add("19:00:00");
+        hours.add("20:00:00");
+        
+        Appointement a = new Appointement();
+        
+        a.scheduleValuesDoctor(infoPatient, id);
+        a.getCoordSchedule(jTable1, id, hours, infoPatient);
+                
+    }
     
     private void init()
     {
@@ -161,6 +250,108 @@ public class DoctorSchedule extends javax.swing.JFrame {
         this.hide();
         new DoctorAction(id).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Appointement a = new Appointement();
+        a.getDateDoctor(days, id);
+        
+        SimpleDateFormat formater = null;
+        formater=new SimpleDateFormat("yyyy-MM-dd");
+        
+        for(int i=0; i<days.size(); i++)
+        {
+            jComboBox2.addItem(days.get(i));
+        }
+        
+        
+        jComboBox1.setVisible(true);
+        jComboBox2.setVisible(true);
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        try
+        {
+            Appointement ac = new Appointement();
+            SimpleDateFormat formater = null;
+            formater=new SimpleDateFormat("yyyy-MM-dd");
+            ac.getHourDoctor(hours, id, jComboBox2.getSelectedItem().toString());
+            jComboBox1.removeAllItems();
+            formater=new SimpleDateFormat("kk:mm:ss");
+            for(int i=0; i<hours.size(); i++)
+            {
+                jComboBox1.addItem(hours.get(i));
+            }
+            hours.clear();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Appointement ac = new Appointement();
+        ac.removeApp(jComboBox2.getSelectedItem().toString(), jComboBox1.getSelectedItem().toString(), id);
+        init();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        jButton4.setVisible(true);
+        jButton5.setVisible(true);
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        AppointementControl ac = new AppointementControl();
+        ac.getDays(id, days2);
+        
+        SimpleDateFormat formater = null;
+        formater=new SimpleDateFormat("yyyy-MM-dd");
+        
+        for(int i=0; i<days2.size(); i++)
+        {
+            jComboBox3.addItem(formater.format(days2.get(i)));
+        }
+        
+        jComboBox3.setVisible(true);
+        jComboBox4.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        try
+        {
+            AppointementControl ac = new AppointementControl();
+            SimpleDateFormat formater = null;
+            formater=new SimpleDateFormat("yyyy-MM-dd");
+            ac.checkHour(id, hours2, formater.parse(jComboBox3.getSelectedItem().toString()));
+            jComboBox4.removeAllItems();
+            formater=new SimpleDateFormat("kk:mm:ss");
+            for(int i=0; i<hours2.size(); i++)
+            {
+                jComboBox4.addItem(formater.format(hours2.get(i)));
+            }
+            hours2.clear();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        jButton6.setVisible(true);
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Appointement ac = new Appointement();
+        ac.modifAppDoctor(jComboBox2.getSelectedItem().toString(), jComboBox1.getSelectedItem().toString(), jComboBox3.getSelectedItem().toString(), jComboBox4.getSelectedItem().toString(), id);
+        init();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.hide();
+        new Application().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     private int id;
