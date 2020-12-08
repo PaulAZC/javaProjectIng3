@@ -35,7 +35,7 @@ public class Appointement {
     private String temp;
 
     public void getDoctor(String spe, ArrayList array)
-    {
+    { // add doctors from the database with the specification required to the array
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -57,7 +57,7 @@ public class Appointement {
     }
 
     public String getNameDoctor(int id)
-    {
+    { // return the doctor's name from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -78,7 +78,7 @@ public class Appointement {
     }
 
     public String getNamePatient(int id)
-    {
+    { // return the patient's name from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -99,7 +99,7 @@ public class Appointement {
     }
 
     public String getSurnamePatient(int id)
-    {
+    { // return the patient's surname from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -120,7 +120,7 @@ public class Appointement {
     }
 
     public String getPathologyPatient(int id)
-    {
+    { // return the patient's pathology from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -141,7 +141,7 @@ public class Appointement {
     }
 
     public void appointementInformation(int id, int monday, int tuesday,  int wednesday, int thursday, int friday, int saturday, int sunday, String beginDate, String endDate)
-    {
+    { // Update the appointments infromations of a doctor from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -151,13 +151,13 @@ public class Appointement {
             ResultSet result = stmt.executeQuery(researchStmt);
 
             if(result.next())
-            {
+            { // if it exists it is updated
                 sqlStatement = "UPDATE `doctorschedule` " +
                                 "SET Monday='"+monday+"', Tuesday='"+tuesday+"', Wednesday='"+wednesday+"', Thursday='"+thursday+"', Friday='"+friday+"', Saturday='"+saturday+"', Sunday='"+sunday+"', "
                                 + "BeginTime='"+beginDate+"', EndTime='"+endDate+"'"+
                                 "WHERE IDDoctor="+id+";";
             }
-            else{
+            else{ // else it is added
                 sqlStatement = "INSERT INTO `doctorschedule` (`IDDoctor`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`, `BeginTime`, `EndTime`)"+
                                 "VALUES ('"+id+"', '"+monday+"', '"+tuesday+"', '"+wednesday+"', '"+thursday+"', '"+friday+"', '"+saturday+"', '"+sunday+"',"
                                 + " '"+beginDate+"', '"+endDate+"')";
@@ -172,7 +172,7 @@ public class Appointement {
     }
 
     public void addAppointement(int idDoctor, int idPatient, String date, String time, String note)
-    {
+    { // add an appointment for a doctor from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -193,7 +193,7 @@ public class Appointement {
     }
 
     public void getDatePatient(ArrayList<String> list, int id)
-    {
+    { // add to the list the dates of a patient's appointments from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -217,7 +217,7 @@ public class Appointement {
     }
 
     public void getDateDoctor(ArrayList<String> list, int id)
-    {
+    { // add to the list the dates of a doctor's appointments from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -241,7 +241,7 @@ public class Appointement {
     }
 
     public void getHourPatient(ArrayList<String> list, int id, String date)
-    {
+    { // add to the list the hour of a patient's appointments from the database with his id and the date
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -265,7 +265,7 @@ public class Appointement {
     }
 
     public void getHourDoctor(ArrayList<String> list, int id, String date)
-    {
+    { // add to the list the dates of a doctor's appointments from the database with his id and the date
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -289,7 +289,7 @@ public class Appointement {
     }
 
     public void removeApp(String date, String time, int idDoctor)
-    {
+    { // remove a doctor's appointment from the database with his id, the date and the time
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -305,7 +305,7 @@ public class Appointement {
     }
 
     public void removeAppPatient(String date, String time, int idPatient)
-    {
+    { // remove a patient's appointment from the database with his id, the date and the time
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -369,7 +369,7 @@ public class Appointement {
     }
 
     public void modifApp(String actualDate, String actualTime, String newDate, String newTime, int idPatient)
-    {
+    { // modify a Patient's appointment (date, time) from the database with his id
         try
         {
             int idDoctor;
@@ -398,7 +398,7 @@ public class Appointement {
     }
 
     public void modifAppDoctor(String actualDate, String actualTime, String newDate, String newTime, int idDoctor)
-    {
+    { // modify a doctor's appointment (date, time) from the database with his id
         try
         {
             int idPatient;
@@ -427,7 +427,7 @@ public class Appointement {
     }
 
     public void scheduleValuesDoctor(ArrayList<String> infoPatient, int id)
-    {
+    { // get the list of patient's appointment informations of a doctor from the database with his id
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
@@ -450,7 +450,7 @@ public class Appointement {
     }
 
     public void getCoordSchedule(JTable table, int id, ArrayList<String> hours, ArrayList<String> infoPatient)
-    {
+    { // get the list of patient's appointment informations of a doctor from the database with his id
             Date today = new Date();
             Date day1 = new Date();
             Date day2 = new Date();
