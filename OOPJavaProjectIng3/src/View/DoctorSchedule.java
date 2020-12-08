@@ -12,10 +12,14 @@ import java.util.GregorianCalendar;
 import Model.Appointement;
 import Controller.AppointementControl;
 import java.text.SimpleDateFormat;
-/**
- *
- * @author ayzac
- */
+/*!
+       \file DoctorSchedule.java
+       \brief  Class which extends from JFrame, GUI interface for the Doctor's schedule, to watch and edit it
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class DoctorSchedule extends javax.swing.JFrame {
     private ArrayList<String> infoPatient = new ArrayList<String>();
     private ArrayList<String> days = new ArrayList<String>();
@@ -205,7 +209,7 @@ public class DoctorSchedule extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void loadTable()
     {
         ArrayList<String> hours = new ArrayList<String>();
@@ -222,26 +226,26 @@ public class DoctorSchedule extends javax.swing.JFrame {
         hours.add("18:00:00");
         hours.add("19:00:00");
         hours.add("20:00:00");
-        
+
         Appointement a = new Appointement();
-        
+
         a.scheduleValuesDoctor(infoPatient, id);
         a.getCoordSchedule(jTable1, id, hours, infoPatient);
-                
+
     }
-    
+
     private void init()
     {
         jComboBox1.hide();
         jComboBox2.hide();
         jComboBox3.hide();
         jComboBox4.hide();
-        
+
         jButton4.hide();
         jButton5.hide();
         jButton6.hide();
     }
-    
+
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
@@ -254,19 +258,19 @@ public class DoctorSchedule extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         Appointement a = new Appointement();
         a.getDateDoctor(days, id);
-        
+
         SimpleDateFormat formater = null;
         formater=new SimpleDateFormat("yyyy-MM-dd");
-        
+
         for(int i=0; i<days.size(); i++)
         {
             jComboBox2.addItem(days.get(i));
         }
-        
-        
+
+
         jComboBox1.setVisible(true);
         jComboBox2.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
@@ -304,15 +308,15 @@ public class DoctorSchedule extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         AppointementControl ac = new AppointementControl();
         ac.getDays(id, days2);
-        
+
         SimpleDateFormat formater = null;
         formater=new SimpleDateFormat("yyyy-MM-dd");
-        
+
         for(int i=0; i<days2.size(); i++)
         {
             jComboBox3.addItem(formater.format(days2.get(i)));
         }
-        
+
         jComboBox3.setVisible(true);
         jComboBox4.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed

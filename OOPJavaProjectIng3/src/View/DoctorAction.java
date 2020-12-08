@@ -9,14 +9,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import Model.Appointement;
-/**
- *
- * @author ayzac
- */
+/*!
+       \file DoctorAction.java
+       \brief  Class which extends from JFrame, GUI interface for the Doctor's Actions to edit the disponobilities
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class DoctorAction extends javax.swing.JFrame {
 
     private int id;
-    
+
     public DoctorAction(int i) {
         id = i;
         initComponents();
@@ -230,9 +234,9 @@ public class DoctorAction extends javax.swing.JFrame {
         {
             sunday=1;
         }
-        beginDate = jTextField2.getText(); 
+        beginDate = jTextField2.getText();
         endDate = jTextField3.getText();
-        
+
         a.appointementInformation(id, monday, tuesday, wednesday, thursday, friday, saturday, sunday, beginDate, endDate);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -241,7 +245,7 @@ public class DoctorAction extends javax.swing.JFrame {
         new DoctorSchedule(id).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    
+
     private String beginDate="", endDate="";
     private int monday=0, tuesday=0, wednesday=0, thursday=0, friday=0, saturday=0, sunday=0;
     // Variables declaration - do not modify//GEN-BEGIN:variables

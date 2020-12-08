@@ -12,10 +12,14 @@ import Model.Connexion;
  * @author ayzac
  */
 public class NewDoctor extends javax.swing.JFrame {
+  /*!
+         \file NewDoctor.java
+         \brief  Class which extends from JFrame, GUI interface to create a new doctor
 
-    /**
-     * Creates new form NewDoctor
-     */
+         \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+         \version      0.1
+         \date         07/12/2020
+  */
     public NewDoctor() {
         initComponents();
     }

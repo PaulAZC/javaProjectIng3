@@ -6,10 +6,14 @@
 package View;
 
 import Model.Connexion;
-/**
- *
- * @author ayzac
- */
+/*!
+       \file Application.java
+       \brief  Class which extends from JFrame, GUI interface for the application, Home and login page for doctor and patient
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class Application extends javax.swing.JFrame {
 
     /**
@@ -201,14 +205,14 @@ public class Application extends javax.swing.JFrame {
         {
             System.out.println("Probleme de connection");
         }
-        else 
+        else
         {
             new PagePatient(id).setVisible(true);
             this.hide();
             System.out.println("Connexion ok");
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
