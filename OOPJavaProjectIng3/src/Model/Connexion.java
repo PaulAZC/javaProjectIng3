@@ -7,7 +7,7 @@ package Model;
 
 import java.sql.*;
 /*!
-       \file OOPJavaProjectIng3.java
+       \file Connexion.java
        \brief Class which tests the conncetion, register a new user or gets information about the user
 
        \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin

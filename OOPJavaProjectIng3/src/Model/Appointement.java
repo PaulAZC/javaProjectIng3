@@ -21,7 +21,7 @@ import static Controller.AppointementControl.addDaysToDate;
 import java.text.SimpleDateFormat;
 
 /*!
-       \file OOPJavaProjectIng3.java
+       \file Appointement.java
        \brief CLass which handles the appointements booking, depending on the doctor's calendar
 
        \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
