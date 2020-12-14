@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package Controller;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -35,7 +34,7 @@ public class AppointementControl {
     private String [][] returnTab;
 
     public void getDays(int idDoctor, ArrayList<Date> days)
-    {
+    { // retourn true pour chaque jour de travail, false sinon
         Date today = new Date();
         Date day1 = new Date();
         Date day2 = new Date();
@@ -51,7 +50,7 @@ public class AppointementControl {
         SimpleDateFormat formater = null;
         formater = new SimpleDateFormat("yyyy-MM-dd");
         formater.format(today);
-
+// Mise au format date
         day1 = addDaysToDate(today, 1);
         formater.format(day1);
 
@@ -69,7 +68,7 @@ public class AppointementControl {
 
         day6 = addDaysToDate(today, 6);
         formater.format(day6);
-
+// Ajout des jours formatés à la liste
         days.add(today);
         days.add(day1);
         days.add(day2);
@@ -77,14 +76,14 @@ public class AppointementControl {
         days.add(day4);
         days.add(day5);
         days.add(day6);
-
+// Si la connection avec la base de données s'établit
         try
         {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
 
             sqlStatement = "SELECT * FROM doctorschedule WHERE IDDoctor='"+idDoctor+"'";
-
+// Sélectionne depuis la table emploi du temps docteur en fonction le l'iD
             ResultSet result = stmt.executeQuery(sqlStatement);
             while(result.next())
             {
@@ -96,14 +95,16 @@ public class AppointementControl {
                saturday = result.getInt("Saturday");
                sunday = result.getInt("Sunday");
             }
+            // Récupère les jours de travail et jours de repos
             result.close();
             stmt.close();
         }
+        // Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
         }
-
+        // Changemet de format
         formater = new SimpleDateFormat("EEEEEEEE");
         formater.format(today);
 
@@ -137,7 +138,7 @@ public class AppointementControl {
         for(int i=0; i<tempD.size(); i++)
         {
             temp = formater.format(tempD.get(i));
-
+            // Si le jour actuel est un jour de travail, on l'ajoute à la liste I
             if(temp.equals("dimanche") && sunday==0)
             {
                 listI.add(i);
@@ -181,14 +182,14 @@ public class AppointementControl {
             days.remove(remove);
         }
     }
-
+// Ajouter n jours à la date actuelle
     public static Date addDaysToDate(Date date, int nbDays){
         Calendar cal = new GregorianCalendar();
         cal.setTime(date);
         cal.add(Calendar.DATE, nbDays);
         return cal.getTime();
     }
-
+// Ajout des différentes heures de travail à la liste
     public void checkHour(int idDoctor, ArrayList<Date> returnList, Date app)
     {
         ArrayList<Date> list = new ArrayList<Date>();
@@ -222,17 +223,17 @@ public class AppointementControl {
             list.add(date);
             date = formatter.parse("20:00:00");
             list.add(date);
-
+// connection à la base de donnée
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+// Selectionne depuis la table emploi du temps des docteur dont l'iD du docteur correspond
             sqlStatement = "SELECT * FROM doctorschedule WHERE IDDoctor='"+idDoctor+"'";
 
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
             Date begin = formatter.parse(result.getString("BeginTime"));
             Date end = formatter.parse(result.getString("EndTime"));
-
+// Heure de début et de fin
             for(int i=0; i<list.size(); i++)
             {
                 if(list.get(i).compareTo(begin)==0 || list.get(i).compareTo(begin)>0)
@@ -244,18 +245,18 @@ public class AppointementControl {
                 }
             }
             result.close();
-
+// Selectionne depuis la table de rdv dont l'iD du docteur correspond
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+idDoctor+"'";
             result = stmt.executeQuery(sqlStatement);
             Date time = new Date();
             Date d = new Date();
             while(result.next())
-            {
+            { // pour chaque element recupéré
                 for(int i=0; i<returnList.size(); i++)
-                {
+                {// Mise au format heure
                     formatter = new SimpleDateFormat("kk:mm:ss");
                     time = formatter.parse(result.getString("Time"));
-
+                    // Mise au format date
                     formatter = new SimpleDateFormat("yyyy-MM-dd");
                     d = formatter.parse(result.getString("Date"));
 
@@ -268,7 +269,7 @@ public class AppointementControl {
             }
 
 
-        }
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -290,20 +291,20 @@ public class AppointementControl {
 
             String doctor;
 
-
+            // Selectionne depuis la table rdv dont l'iD patient correspond (trié par date décroissant)
             sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+idPatient+"' ORDER BY Date DESC";
 
             ResultSet result = stmt.executeQuery(sqlStatement);
 
             while(result.next())
-            {
+            {// recupère l'id du docteur en charge du rdv, la date, l'heure et les notes éventuelles
                 ArrayList<String> temp  = new ArrayList<String>();
                 idDoctor = Integer.parseInt(result.getString("IDDoctor"));
                 temp.add(a.getNameDoctor(idDoctor));
                 temp.add(result.getString("Date"));
                 temp.add(result.getString("Time"));
                 temp.add(result.getString("Note"));
-
+                // Ajout de ces données à la liste de données
                 data.add(temp);
             }
             result.close();
@@ -361,17 +362,17 @@ public class AppointementControl {
             list.add(date);
             date = formatter.parse("20:00:00");
             list.add(date);
-
+            // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table EDT docteur dont l'iD docteur correspond
             sqlStatement = "SELECT * FROM doctorschedule WHERE IDDoctor='"+idDoctor+"'";
 
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
             Date begin = formatter.parse(result.getString("BeginTime"));
             Date end = formatter.parse(result.getString("EndTime"));
-
+            // Recupere heure de début et de fin
             for(int i=0; i<list.size(); i++)
             {
                 if(list.get(i).compareTo(begin)==0 || list.get(i).compareTo(begin)>0)
@@ -383,18 +384,18 @@ public class AppointementControl {
                 }
             }
             result.close();
-
+            // Selectionne depuis la table Rdv dont l'iD docteur correspond
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+idDoctor+"'";
             result = stmt.executeQuery(sqlStatement);
             Date time = new Date();
             Date d = new Date();
             while(result.next())
-            {
+            { // Pour chaque
                 for(int i=0; i<returnList.size(); i++)
-                {
+                { // recupère l'heure et la formate
                     formatter = new SimpleDateFormat("kk:mm:ss");
                     time = formatter.parse(result.getString("Time"));
-
+                    // recupère la date et la formate
                     formatter = new SimpleDateFormat("yyyy-MM-dd");
                     d = formatter.parse(result.getString("Date"));
 
@@ -407,11 +408,11 @@ public class AppointementControl {
             }
 
 
-        }
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
-        }
+        }// Gestion d'erreur
         catch(Exception e){
             System.out.println(e.getMessage());
         }

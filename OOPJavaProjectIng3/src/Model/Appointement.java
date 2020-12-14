@@ -37,19 +37,19 @@ public class Appointement {
     public void getDoctor(String spe, ArrayList array)
     { // add doctors from the database with the specification required to the array
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table docteur dont la specification correspond
             sqlStatement = "SELECT * FROM doctor WHERE Specification='"+spe+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             while(result.next())
-            {
+            { // ajout de son id à la liste
                 array.add(result.getInt("Number"));
             }
             result.close();
             stmt.close();
-        }
+        } // Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -59,17 +59,18 @@ public class Appointement {
     public String getNameDoctor(int id)
     { // return the doctor's name from the database with his id
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table docteur dont l'id coreespond
             sqlStatement = "SELECT * FROM doctor WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
+            // Recupère son nom
             temp = "Dr."+result.getString("Surname");
             result.close();
             stmt.close();
-        }
+        } // Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -80,17 +81,18 @@ public class Appointement {
     public String getNamePatient(int id)
     { // return the patient's name from the database with his id
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table patient dont l'id correspond
             sqlStatement = "SELECT * FROM patient WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
             temp = result.getString("Name");
+            // Recupère son prénom
             result.close();
             stmt.close();
-        }
+        } // Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -101,17 +103,18 @@ public class Appointement {
     public String getSurnamePatient(int id)
     { // return the patient's surname from the database with his id
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table patient dont l'id correspond
             sqlStatement = "SELECT * FROM patient WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
+            // Recupère son nom
             temp = result.getString("Surname");
             result.close();
             stmt.close();
-        }
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -122,17 +125,18 @@ public class Appointement {
     public String getPathologyPatient(int id)
     { // return the patient's pathology from the database with his id
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table patient donc l'id correspond
             sqlStatement = "SELECT * FROM patient WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
+            // Recupère la pathologie
             temp = result.getString("Pathology");
             result.close();
             stmt.close();
-        }
+        } // Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -143,10 +147,10 @@ public class Appointement {
     public void appointementInformation(int id, int monday, int tuesday,  int wednesday, int thursday, int friday, int saturday, int sunday, String beginDate, String endDate)
     { // Update the appointments infromations of a doctor from the database with his id
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // SElectionne depuis la table edt docteur dont l'id correspond
             researchStmt = "SELECT * FROM `doctorschedule` WHERE IDDoctor="+id;
             ResultSet result = stmt.executeQuery(researchStmt);
 
@@ -164,7 +168,7 @@ public class Appointement {
             }
             int rows = stmt.executeUpdate(sqlStatement);
             System.out.println("Informations ok");
-        }
+        } // Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -174,10 +178,10 @@ public class Appointement {
     public void addAppointement(int idDoctor, int idPatient, String date, String time, String note)
     { // add an appointment for a doctor from the database with his id
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Insere dans la table rdv l'id patient, id docteur, date, heure, notes
             sqlStatement = "INSERT INTO appointement " +
                       "(`IDPatient`, `IDDoctor`, `Date`, `Time`, `Note`)" +
                       " VALUES " +
@@ -187,7 +191,7 @@ public class Appointement {
             System.out.println("Appointement ok");
         }
         catch(SQLException e)
-        {
+        {// Gestion d'erreur
             System.out.println(e.getMessage());
         }
     }
@@ -195,21 +199,21 @@ public class Appointement {
     public void getDatePatient(ArrayList<String> list, int id)
     { // add to the list the dates of a patient's appointments from the database with his id
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont l'id patient correspond (par ordre décroissant)
             sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+id+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
 
             while(result.next())
-            {
+            {// Pour chacun ajout à la liste la date du rdv
                 list.add(result.getString("Date"));
             }
 
             result.close();
             stmt.close();
-        }
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -219,21 +223,21 @@ public class Appointement {
     public void getDateDoctor(ArrayList<String> list, int id)
     { // add to the list the dates of a doctor's appointments from the database with his id
         try
-        {
+        {// Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont l'id docteur corresond (par ordre decroissant)
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+id+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
 
             while(result.next())
-            {
+            {// Pour chaque ajout à la liste la date du rdv
                 list.add(result.getString("Date"));
             }
 
             result.close();
             stmt.close();
-        }
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -243,15 +247,15 @@ public class Appointement {
     public void getHourPatient(ArrayList<String> list, int id, String date)
     { // add to the list the hour of a patient's appointments from the database with his id and the date
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont l'id patient correspond et la date correspond (par date decroissant)
             sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+id+"' && Date='"+date+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
 
             while(result.next())
-            {
+            {// Pour chaque ajout à la liste l'heure du rdv patient
                 list.add(result.getString("Time"));
             }
 
@@ -259,7 +263,7 @@ public class Appointement {
             stmt.close();
         }
         catch(SQLException e)
-        {
+        {// Gestion d'erreur
             System.out.println(e.getMessage());
         }
     }
@@ -267,15 +271,15 @@ public class Appointement {
     public void getHourDoctor(ArrayList<String> list, int id, String date)
     { // add to the list the dates of a doctor's appointments from the database with his id and the date
         try
-        {
+        { // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont l'id docteur correspond et la date (par ordre décroissant)
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+id+"' && Date='"+date+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
 
             while(result.next())
-            {
+            {// Pour chaque ajout à la liste l'heure du rdv docteur
                 list.add(result.getString("Time"));
             }
 
@@ -283,7 +287,7 @@ public class Appointement {
             stmt.close();
         }
         catch(SQLException e)
-        {
+        {// Gestion d'erreur
             System.out.println(e.getMessage());
         }
     }
@@ -291,15 +295,15 @@ public class Appointement {
     public void removeApp(String date, String time, int idDoctor)
     { // remove a doctor's appointment from the database with his id, the date and the time
         try
-        {
+        {// Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Supprime depuis la table rdv dont la date, l'heure et l'id docteur correspondent
             sqlStatement = "DELETE FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDDoctor='"+idDoctor+"'";
             int rows = stmt.executeUpdate(sqlStatement);
         }
         catch(SQLException e)
-        {
+        {// Gestion d'erreur
             System.out.println(e.getMessage());
         }
     }
@@ -307,13 +311,13 @@ public class Appointement {
     public void removeAppPatient(String date, String time, int idPatient)
     { // remove a patient's appointment from the database with his id, the date and the time
         try
-        {
+        {// Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Supprime depuis la table rdv dont la date, l'heure et l'id patient correspondent
             sqlStatement = "DELETE FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
             int rows = stmt.executeUpdate(sqlStatement);
-        }
+        } // Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -321,23 +325,25 @@ public class Appointement {
     }
 
     public void getListDateDoctor(String date, String time, int idPatient, ArrayList<Date> list)
-    {
+    {// get list of working days of a doctor
         try
         {
             int idDoctor;
-
+            // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont la date, l'heure et l'id patient correspondent
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
+            // Recupère l'id docteur affilié au rdv
             idDoctor=result.getInt("IDDoctor");
             result.close();
 
             AppointementControl a = new AppointementControl();
             a.getDays(idDoctor, list);
-        }
+            // Recupère les jours de travail du docteur
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -345,23 +351,25 @@ public class Appointement {
     }
 
     public void getListHourDoctor(String date, String time, int idPatient, ArrayList<Date> list, Date dateChoice)
-    {
+    {// Get list of working hours of a doctor
         try
         {
             int idDoctor;
-
+            // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont la date, l'heure et l'id patient correspondent
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
+            // Recupère l'id docteur
             idDoctor=result.getInt("IDDoctor");
             result.close();
 
             AppointementControl a = new AppointementControl();
             a.checkHour(idDoctor, list, dateChoice);
-        }
+            // recupère les heures de travail du doc
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -374,23 +382,26 @@ public class Appointement {
         {
             int idDoctor;
             String notes;
-
+            // Connction à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont la date, l'heure et l'id patient correspondent
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+actualDate+"' && Time='"+actualTime+"' && IDPatient='"+idPatient+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
+            // Recupère l'id docteur associé
             idDoctor=result.getInt("IDDoctor");
+            // Et les notes
             notes=result.getString("Note");
             result.close();
-
+            // Supprime le rdv selectionné
             sqlStatement = "DELETE FROM appointement WHERE DATE='"+actualDate+"' && Time='"+actualTime+"' && IDPatient='"+idPatient+"'";
             int rows = stmt.executeUpdate(sqlStatement);
 
             Appointement a = new Appointement();
+            // Ajout du rdv avec les nouvelles données
             a.addAppointement(idDoctor, idPatient, newDate, newTime, notes);
-        }
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
@@ -403,23 +414,25 @@ public class Appointement {
         {
             int idPatient;
             String notes;
-
+            // Connection à la bdd
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-
+            // Selectionne depuis la table rdv dont la date, l'heure et l'id docteur correpondent
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+actualDate+"' && Time='"+actualTime+"' && IDDoctor='"+idDoctor+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
+            // Recupère l'id patient et les notes
             idPatient=result.getInt("IDPatient");
             notes=result.getString("Note");
             result.close();
-
+            // supprime le rdv selectionne
             sqlStatement = "DELETE FROM appointement WHERE DATE='"+actualDate+"' && Time='"+actualTime+"' && IDDoctor='"+idDoctor+"'";
             int rows = stmt.executeUpdate(sqlStatement);
 
             Appointement a = new Appointement();
             a.addAppointement(idDoctor, idPatient, newDate, newTime, notes);
-        }
+            // Ajout du rdv avec les nouvelles données
+        }// Gestion d'erreur
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
