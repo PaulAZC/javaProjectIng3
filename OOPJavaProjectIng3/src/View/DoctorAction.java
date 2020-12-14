@@ -99,6 +99,7 @@ public class DoctorAction extends javax.swing.JFrame {
         jLabel4.setText("Edit your schedule");
 
         jButton2.setText("My schedule");
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

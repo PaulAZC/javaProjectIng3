@@ -6,6 +6,7 @@
 package View;
 
 import Model.Connexion;
+import java.awt.Color;
 
 /**
  *
@@ -44,6 +45,7 @@ public class DoctorPage extends javax.swing.JFrame {
         jTextField1.setText("User Name");
 
         jTextField2.setText("Password");
+        jTextField2.setName(""); // NOI18N
 
         jButton1.setText("Connexion");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -129,6 +131,7 @@ public class DoctorPage extends javax.swing.JFrame {
         if(id==0)
         {
             System.out.println("Probleme de connection");
+            jTextField2.setBackground(Color.red);
         }
         else 
         {
