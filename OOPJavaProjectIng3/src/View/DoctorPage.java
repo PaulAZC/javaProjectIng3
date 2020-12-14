@@ -6,6 +6,14 @@
 package View;
 
 import Model.Connexion;
+import java.awt.Color;
+
+
+/**
+ *
+ * @author ayzac
+ */
+=======
 /*!
        \file DoctorPage.java
        \brief  Class which extends from JFrame, GUI interface for the Doctor's page, Doctor's login page
@@ -14,6 +22,7 @@ import Model.Connexion;
        \version      0.1
        \date         07/12/2020
 */
+
 public class DoctorPage extends javax.swing.JFrame {
 
     /**
@@ -47,6 +56,7 @@ public class DoctorPage extends javax.swing.JFrame {
         jTextField1.setText("User Name");
 
         jTextField2.setText("Password");
+        jTextField2.setName(""); // NOI18N
 
         jButton1.setText("Connexion");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +142,7 @@ public class DoctorPage extends javax.swing.JFrame {
         if(id==0)
         {
             System.out.println("Probleme de connection");
+            jTextField2.setBackground(Color.red);
         }
         else
         {

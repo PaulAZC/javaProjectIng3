@@ -6,6 +6,7 @@
 package View;
 
 import Model.Connexion;
+import java.awt.Color;
 
 /**
  *
@@ -135,6 +136,8 @@ public class NewDoctor extends javax.swing.JFrame {
         else
         {
             System.out.println("Password not compatible");
+            jTextField2.setBackground(Color.red);
+            jTextField3.setBackground(Color.red);
         }
         if(b==1)
         {
