@@ -6,11 +6,14 @@
 package View;
 
 import Model.Connexion;
+/*!
+       \file PatientInformation.java
+       \brief  Class which extends from JFrame, GUI interface for the Doctor's informations, to get his name, surname and pathology
 
-/**
- *
- * @author ayzac
- */
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class PatientInformation extends javax.swing.JFrame {
 
     /**

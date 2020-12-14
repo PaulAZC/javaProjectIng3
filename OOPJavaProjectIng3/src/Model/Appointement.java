@@ -20,10 +20,14 @@ import Controller.AppointementControl;
 import static Controller.AppointementControl.addDaysToDate;
 import java.text.SimpleDateFormat;
 
-/**
- *
- * @author ayzac
- */
+/*!
+       \file Appointement.java
+       \brief CLass which handles the appointements booking, depending on the doctor's calendar
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class Appointement {
     private final String URL = "jdbc:mysql://localhost:3308/medical_application";
     private String sqlStatement;
@@ -31,12 +35,12 @@ public class Appointement {
     private String temp;
 
     public void getDoctor(String spe, ArrayList array)
-    {
+    { // add doctors from the database with the specification required to the array
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM doctor WHERE Specification='"+spe+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             while(result.next())
@@ -51,14 +55,14 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public String getNameDoctor(int id)
-    {
+    { // return the doctor's name from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM doctor WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
@@ -72,14 +76,14 @@ public class Appointement {
         }
         return temp;
     }
-    
+
     public String getNamePatient(int id)
-    {
+    { // return the patient's name from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM patient WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
@@ -93,14 +97,14 @@ public class Appointement {
         }
         return temp;
     }
-    
+
     public String getSurnamePatient(int id)
-    {
+    { // return the patient's surname from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM patient WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
@@ -114,14 +118,14 @@ public class Appointement {
         }
         return temp;
     }
-    
+
     public String getPathologyPatient(int id)
-    {
+    { // return the patient's pathology from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM patient WHERE Number='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
@@ -135,25 +139,25 @@ public class Appointement {
         }
         return temp;
     }
-    
+
     public void appointementInformation(int id, int monday, int tuesday,  int wednesday, int thursday, int friday, int saturday, int sunday, String beginDate, String endDate)
-    {
+    { // Update the appointments infromations of a doctor from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
 
             researchStmt = "SELECT * FROM `doctorschedule` WHERE IDDoctor="+id;
             ResultSet result = stmt.executeQuery(researchStmt);
-            
+
             if(result.next())
-            {
+            { // if it exists it is updated
                 sqlStatement = "UPDATE `doctorschedule` " +
                                 "SET Monday='"+monday+"', Tuesday='"+tuesday+"', Wednesday='"+wednesday+"', Thursday='"+thursday+"', Friday='"+friday+"', Saturday='"+saturday+"', Sunday='"+sunday+"', "
                                 + "BeginTime='"+beginDate+"', EndTime='"+endDate+"'"+
                                 "WHERE IDDoctor="+id+";";
             }
-            else{
+            else{ // else it is added
                 sqlStatement = "INSERT INTO `doctorschedule` (`IDDoctor`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`, `BeginTime`, `EndTime`)"+
                                 "VALUES ('"+id+"', '"+monday+"', '"+tuesday+"', '"+wednesday+"', '"+thursday+"', '"+friday+"', '"+saturday+"', '"+sunday+"',"
                                 + " '"+beginDate+"', '"+endDate+"')";
@@ -166,11 +170,11 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void addAppointement(int idDoctor, int idPatient, String date, String time, String note)
-    {
+    { // add an appointment for a doctor from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
 
@@ -178,7 +182,7 @@ public class Appointement {
                       "(`IDPatient`, `IDDoctor`, `Date`, `Time`, `Note`)" +
                       " VALUES " +
                       "('"+idPatient+"','"+idDoctor+"','"+date+"','"+time+"','"+note+"')";
-            
+
             int rows = stmt.executeUpdate(sqlStatement);
             System.out.println("Appointement ok");
         }
@@ -187,22 +191,22 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void getDatePatient(ArrayList<String> list, int id)
-    {
+    { // add to the list the dates of a patient's appointments from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+id+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
-            
+
             while(result.next())
             {
                 list.add(result.getString("Date"));
             }
-            
+
             result.close();
             stmt.close();
         }
@@ -211,22 +215,22 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void getDateDoctor(ArrayList<String> list, int id)
-    {
+    { // add to the list the dates of a doctor's appointments from the database with his id
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+id+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
-            
+
             while(result.next())
             {
                 list.add(result.getString("Date"));
             }
-            
+
             result.close();
             stmt.close();
         }
@@ -235,22 +239,22 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void getHourPatient(ArrayList<String> list, int id, String date)
-    {
+    { // add to the list the hour of a patient's appointments from the database with his id and the date
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM appointement WHERE IDPatient='"+id+"' && Date='"+date+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
-            
+
             while(result.next())
             {
                 list.add(result.getString("Time"));
             }
-            
+
             result.close();
             stmt.close();
         }
@@ -259,22 +263,22 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void getHourDoctor(ArrayList<String> list, int id, String date)
-    {
+    { // add to the list the dates of a doctor's appointments from the database with his id and the date
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+id+"' && Date='"+date+"' ORDER BY Date DESC";
             ResultSet result = stmt.executeQuery(sqlStatement);
-            
+
             while(result.next())
             {
                 list.add(result.getString("Time"));
             }
-            
+
             result.close();
             stmt.close();
         }
@@ -283,14 +287,14 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void removeApp(String date, String time, int idDoctor)
-    {
+    { // remove a doctor's appointment from the database with his id, the date and the time
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-                        
+
             sqlStatement = "DELETE FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDDoctor='"+idDoctor+"'";
             int rows = stmt.executeUpdate(sqlStatement);
         }
@@ -299,14 +303,14 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void removeAppPatient(String date, String time, int idPatient)
-    {
+    { // remove a patient's appointment from the database with his id, the date and the time
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-                        
+
             sqlStatement = "DELETE FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
             int rows = stmt.executeUpdate(sqlStatement);
         }
@@ -315,22 +319,22 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void getListDateDoctor(String date, String time, int idPatient, ArrayList<Date> list)
     {
         try
-        {            
+        {
             int idDoctor;
-            
+
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-                        
+
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
             idDoctor=result.getInt("IDDoctor");
             result.close();
-            
+
             AppointementControl a = new AppointementControl();
             a.getDays(idDoctor, list);
         }
@@ -339,22 +343,22 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void getListHourDoctor(String date, String time, int idPatient, ArrayList<Date> list, Date dateChoice)
     {
         try
-        {            
+        {
             int idDoctor;
-            
+
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-                        
+
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+date+"' && Time='"+time+"' && IDPatient='"+idPatient+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
             idDoctor=result.getInt("IDDoctor");
             result.close();
-            
+
             AppointementControl a = new AppointementControl();
             a.checkHour(idDoctor, list, dateChoice);
         }
@@ -363,27 +367,27 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void modifApp(String actualDate, String actualTime, String newDate, String newTime, int idPatient)
-    {
+    { // modify a Patient's appointment (date, time) from the database with his id
         try
-        {            
+        {
             int idDoctor;
             String notes;
-            
+
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+actualDate+"' && Time='"+actualTime+"' && IDPatient='"+idPatient+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
             idDoctor=result.getInt("IDDoctor");
             notes=result.getString("Note");
             result.close();
-            
+
             sqlStatement = "DELETE FROM appointement WHERE DATE='"+actualDate+"' && Time='"+actualTime+"' && IDPatient='"+idPatient+"'";
             int rows = stmt.executeUpdate(sqlStatement);
-            
+
             Appointement a = new Appointement();
             a.addAppointement(idDoctor, idPatient, newDate, newTime, notes);
         }
@@ -392,27 +396,27 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void modifAppDoctor(String actualDate, String actualTime, String newDate, String newTime, int idDoctor)
-    {
+    { // modify a doctor's appointment (date, time) from the database with his id
         try
-        {            
+        {
             int idPatient;
             String notes;
-            
+
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM appointement WHERE Date='"+actualDate+"' && Time='"+actualTime+"' && IDDoctor='"+idDoctor+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
             idPatient=result.getInt("IDPatient");
             notes=result.getString("Note");
             result.close();
-            
+
             sqlStatement = "DELETE FROM appointement WHERE DATE='"+actualDate+"' && Time='"+actualTime+"' && IDDoctor='"+idDoctor+"'";
             int rows = stmt.executeUpdate(sqlStatement);
-            
+
             Appointement a = new Appointement();
             a.addAppointement(idDoctor, idPatient, newDate, newTime, notes);
         }
@@ -421,14 +425,14 @@ public class Appointement {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void scheduleValuesDoctor(ArrayList<String> infoPatient, int id)
-    {
+    { // get the list of patient's appointment informations of a doctor from the database with his id
         try
-        {                
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-                        
+
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             while(result.next())
@@ -437,32 +441,32 @@ public class Appointement {
                 infoPatient.add(temp);
             }
             result.close();
-     
+
         }
         catch(SQLException e)
         {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void getCoordSchedule(JTable table, int id, ArrayList<String> hours, ArrayList<String> infoPatient)
-    {
-            Date today = new Date();    
+    { // get the list of patient's appointment informations of a doctor from the database with his id
+            Date today = new Date();
             Date day1 = new Date();
             Date day2 = new Date();
             Date day3 = new Date();
             Date day4 = new Date();
             Date day5 = new Date();
             Date day6 = new Date();
-            
+
             ArrayList<Date> days = new ArrayList<Date>();
             ArrayList<Date> tempD = new ArrayList<Date>();
-            
+
             SimpleDateFormat formater = null;
             formater=new SimpleDateFormat("yyyy-MM-dd");
-            
+
             formater.format(today);
-       
+
             day1 = addDaysToDate(today, 1);
             formater.format(day1);
 
@@ -480,7 +484,7 @@ public class Appointement {
 
             day6 = addDaysToDate(today, 6);
             formater.format(day6);
-            
+
             days.add(today);
             days.add(day1);
             days.add(day2);
@@ -488,7 +492,7 @@ public class Appointement {
             days.add(day4);
             days.add(day5);
             days.add(day6);
-            
+
             formater = new SimpleDateFormat("EEEEEEEE");
             formater.format(today);
 
@@ -517,9 +521,9 @@ public class Appointement {
             tempD.add(day4);
             tempD.add(day5);
             tempD.add(day6);
-            
+
         try
-        {                
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
             int[] tempInt = new int[2];
@@ -527,18 +531,18 @@ public class Appointement {
             ArrayList<int []> t = new ArrayList<int []>();
             sqlStatement = "SELECT * FROM appointement WHERE IDDoctor='"+id+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
-            
+
             while(result.next())
             {
                for(int i=0; i<days.size(); i++)
                {
                    formater = new SimpleDateFormat("yyyy-MM-dd");
                    String d = formater.format(days.get(i));
-                   
+
                    if(result.getString("Date").equals(d))
                    {
                        formater = new SimpleDateFormat("EEEEEEEE");
-                       
+
                        if("lundi".equals(formater.format(tempD.get(i))))
                        {
                            for(int j=0; j<hours.size(); j++)
@@ -617,7 +621,7 @@ public class Appointement {
                            tempInt[1]=7;
                        }
                    }
-                   
+
                }
                if(tempInt[1]!=0)
                {

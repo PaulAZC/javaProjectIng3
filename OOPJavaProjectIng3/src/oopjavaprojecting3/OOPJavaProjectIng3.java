@@ -8,10 +8,14 @@ package oopjavaprojecting3;
 
 import View.Application;
 
-/**
- *
- * @author ayzac
- */
+/*!
+       \file OOPJavaProjectIng3.java
+       \brief creating an application, source code for the GUI
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class OOPJavaProjectIng3 {
 
     /**

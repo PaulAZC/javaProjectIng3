@@ -6,10 +6,14 @@
 package Model;
 
 import java.sql.*;
-/**
- *
- * @author ayzac
- */
+/*!
+       \file Connexion.java
+       \brief Class which tests the conncetion, register a new user or gets information about the user
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class Connexion {
     private final String URL = "jdbc:mysql://localhost:3308/medical_application";
     private String sqlStatement;
@@ -20,10 +24,10 @@ public class Connexion {
     public int verifConnection(String username, String password, String function)
     {
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "SELECT * FROM connexion WHERE Username='" +username+ "' && Password='"+password+"'";
             ResultSet result = stmt.executeQuery(sqlStatement);
             result.next();
@@ -40,19 +44,19 @@ public class Connexion {
         }
         return id;
     }
-    
+
     public int registration(String username, String password, String function)
     {
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
-            
+
             sqlStatement = "INSERT INTO connexion " +
                       "(`Function`, `Username`, `Password`)" +
                       " VALUES " +
                       "('"+function+"','"+username+"','"+password+"')";
-            
+
             researchStmt = "SELECT * FROM connexion WHERE Username='" +username+"'";
             ResultSet result = stmt.executeQuery(researchStmt);
             while(result.next() && b==1)
@@ -80,11 +84,11 @@ public class Connexion {
         }
         return b;
     }
-    
+
     public void information(int id, String name, String surname, String spe, String function)
     {
         try
-        {            
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
             if(function=="Doctor")
@@ -97,7 +101,7 @@ public class Connexion {
                 sqlStatement = "INSERT INTO `patient` (`Number`, `Name`, `Surname`, `Pathology`) "
                         + "VALUES ('"+id+"','"+name+"','"+surname+"','"+spe+"');";
             }
-            int rows = stmt.executeUpdate(sqlStatement); 
+            int rows = stmt.executeUpdate(sqlStatement);
             stmt.close();
         }
         catch(SQLException e)
@@ -105,11 +109,11 @@ public class Connexion {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public int getLastID()
     {
         try
-        { 
+        {
             Connection co = DriverManager.getConnection(URL, "root", "paul1234");
             Statement stmt = co.createStatement();
             researchStmt = "SELECT * FROM connexion ORDER BY Id DESC LIMIT 0, 1";
@@ -127,4 +131,3 @@ public class Connexion {
         return id;
     }
 }
-

@@ -8,10 +8,21 @@ package View;
 import Model.Connexion;
 import java.awt.Color;
 
+
 /**
  *
  * @author ayzac
  */
+=======
+/*!
+       \file DoctorPage.java
+       \brief  Class which extends from JFrame, GUI interface for the Doctor's page, Doctor's login page
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
+
 public class DoctorPage extends javax.swing.JFrame {
 
     /**
@@ -133,7 +144,7 @@ public class DoctorPage extends javax.swing.JFrame {
             System.out.println("Probleme de connection");
             jTextField2.setBackground(Color.red);
         }
-        else 
+        else
         {
             new DoctorAction(id).setVisible(true);
             this.hide();

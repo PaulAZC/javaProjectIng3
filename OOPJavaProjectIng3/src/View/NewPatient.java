@@ -11,10 +11,14 @@ import java.awt.Color;
  * @author ayzac
  */
 public class NewPatient extends javax.swing.JFrame {
+  /*!
+         \file NewPatient.java
+         \brief  Class which extends from JFrame, GUI interface to create a new Patient
 
-    /**
-     * Creates new form NewPatient
-     */
+         \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+         \version      0.1
+         \date         07/12/2020
+  */
     public NewPatient() {
         initComponents();
     }

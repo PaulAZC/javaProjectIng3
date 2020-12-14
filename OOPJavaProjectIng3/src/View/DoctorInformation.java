@@ -5,10 +5,14 @@
  */
 package View;
 import Model.Connexion;
-/**
- *
- * @author ayzac
- */
+/*!
+       \file DoctorInformation.java
+       \brief  Class which extends from JFrame, GUI interface for the Doctor's informations, to get his name, surname and specification
+
+       \author       Paul Ayzac, Mathieu Chaix & Thaddée Roland-Gosselin
+       \version      0.1
+       \date         07/12/2020
+*/
 public class DoctorInformation extends javax.swing.JFrame {
 
     /**
