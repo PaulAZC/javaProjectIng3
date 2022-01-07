@@ -1,4 +1,4 @@
-## JAVA Project 
+## JAVA Project using MVC Model and SQL database
 ## Authors : Paul AYZAC & Mathieu CHAIX
 ## Description :
 Here is an application coded in JAVA whose purpose is to manage medical appointments through a MySQL database using WAMP server.
